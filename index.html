@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kode&Co — Your Vision, Engineered</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0A0A0F;
+      --surface: #111108;
+      --border:  #2A2510;
+      --gold:    #F59E0B;
+      --amber:   #FBBF24;
+      --grad:    linear-gradient(135deg, #F59E0B, #FBBF24);
+      --white:   #F5F0E8;
+      --muted:   #8A8070;
+      --display: 'Syne', sans-serif;
+      --body:    'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--white); font-family: var(--body); overflow-x: hidden; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 5%;
+      background: rgba(10,10,8,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: padding .3s;
+    }
+    nav.scrolled { padding: .8rem 5%; }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: .85rem; letter-spacing: .06em; text-transform: uppercase; transition: color .2s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      background: var(--grad); color: #000;
+      padding: .55rem 1.4rem;
+      font-size: .82rem; font-weight: 700; text-decoration: none;
+      letter-spacing: .06em; text-transform: uppercase;
+      transition: opacity .2s;
+    }
+    .nav-cta:hover { opacity: .85; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: .3s; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 5% 5rem; position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('hero.jpg') center/cover no-repeat;
+    }
+    .hero-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10,10,8,1) 0%, rgba(10,10,8,.65) 50%, rgba(10,10,8,.25) 100%);
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 800px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: .6rem;
+      font-size: .75rem; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 1.5rem;
+    }
+    .eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--amber); }
+    h1 {
+      font-family: var(--display);
+      font-size: clamp(3rem, 7.5vw, 6rem);
+      font-weight: 800; line-height: 1.02; letter-spacing: -.03em; margin-bottom: 1.5rem;
+    }
+    h1 em {
+      font-style: normal;
+      background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub { font-size: 1.05rem; color: var(--muted); max-width: 480px; margin-bottom: 2.5rem; line-height: 1.75; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--grad); color: #000;
+      padding: .85rem 2.2rem; font-weight: 700; font-size: .88rem;
+      text-decoration: none; letter-spacing: .06em; text-transform: uppercase; transition: opacity .2s;
+    }
+    .btn-primary:hover { opacity: .85; }
+    .btn-outline {
+      border: 1px solid var(--border); color: var(--white);
+      padding: .85rem 2.2rem; font-size: .88rem; text-decoration: none;
+      letter-spacing: .06em; text-transform: uppercase; transition: border-color .2s, color .2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── STATS ── */
+    .stats-bar {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      background: var(--surface); border-bottom: 1px solid var(--border);
+    }
+    .stat { padding: 2rem 5%; border-right: 1px solid var(--border); }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-family: var(--display); font-size: 2.4rem; font-weight: 800;
+      background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .stat-label { font-size: .78rem; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-top: .2rem; }
+
+    /* ── SHARED ── */
+    section { padding: 6rem 5%; }
+    .sec-eye {
+      font-size: .73rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 1rem;
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .sec-eye::before { content: ''; display: block; width: 24px; height: 1px; background: var(--amber); }
+    h2 {
+      font-family: var(--display);
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
+      font-weight: 800; line-height: 1.08; letter-spacing: -.025em; margin-bottom: 1.2rem;
+    }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--surface); }
+    .projects-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem; }
+    .projects-header p { color: var(--muted); max-width: 340px; font-size: .95rem; line-height: 1.7; }
+
+    .projects-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--border); }
+    .project-card { background: var(--bg); overflow: hidden; position: relative; }
+    .project-img { width: 100%; height: 220px; object-fit: cover; display: block; transition: transform .5s ease; }
+    .project-card:hover .project-img { transform: scale(1.04); }
+    .project-img-wrap { overflow: hidden; position: relative; }
+    .project-img-wrap::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10,10,8,.95) 0%, rgba(10,10,8,.3) 100%);
+    }
+    .project-body { padding: 2rem 2rem 2.5rem; position: relative; }
+    .project-body::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+      background: var(--grad); transform: scaleX(0); transform-origin: left; transition: transform .35s;
+    }
+    .project-card:hover .project-body::after { transform: scaleX(1); }
+    .p-num { font-size: .72rem; letter-spacing: .14em; color: var(--gold); margin-bottom: .8rem; text-transform: uppercase; }
+    .project-card h3 { font-family: var(--display); font-size: 1.25rem; font-weight: 700; margin-bottom: .7rem; }
+    .project-card p { color: var(--muted); font-size: .88rem; line-height: 1.65; margin-bottom: 1.3rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .tag { font-size: .7rem; border: 1px solid var(--border); color: var(--muted); padding: .2rem .65rem; text-transform: uppercase; letter-spacing: .04em; }
+
+    /* ── SERVICES ── */
+    #services { background: var(--bg); padding: 0; }
+    .services-top {
+      display: grid; grid-template-columns: 1fr 1fr; min-height: 480px;
+    }
+    .services-img { position: relative; overflow: hidden; }
+    .services-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .services-img::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(10,10,8,0) 60%, rgba(10,10,8,1) 100%);
+    }
+    .services-text { padding: 5rem 5rem 5rem 4rem; display: flex; flex-direction: column; justify-content: center; }
+    .services-text p { color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      border-top: 1px solid var(--border); background: var(--border); gap: 1px;
+    }
+    .svc-card { background: var(--surface); padding: 2.5rem 2rem; transition: background .2s; }
+    .svc-card:hover { background: #161408; }
+    .svc-icon {
+      width: 46px; height: 46px; margin-bottom: 1.4rem;
+      background: var(--grad); display: flex; align-items: center; justify-content: center;
+    }
+    .svc-icon svg { width: 22px; height: 22px; stroke: #000; fill: none; stroke-width: 2; }
+    .svc-card h3 { font-family: var(--display); font-size: 1rem; font-weight: 700; margin-bottom: .6rem; }
+    .svc-card p { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── PROCESS ── */
+    #process { background: var(--surface); padding: 0; }
+    .process-layout { display: grid; grid-template-columns: 1fr 1fr; min-height: 520px; }
+    .process-text { padding: 5rem 4rem 5rem 5%; display: flex; flex-direction: column; justify-content: center; }
+    .process-text > p { color: var(--muted); margin-bottom: 3rem; line-height: 1.75; }
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step {
+      display: flex; gap: 1.5rem; padding: 1.4rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; }
+    .step-dot {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border: 1px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--display); font-size: .78rem; font-weight: 700; color: var(--gold);
+    }
+    .step h4 { font-family: var(--display); font-size: .95rem; font-weight: 700; margin-bottom: .3rem; }
+    .step p { font-size: .83rem; color: var(--muted); line-height: 1.55; }
+    .process-img { position: relative; overflow: hidden; }
+    .process-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .process-img::before {
+      content: ''; position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(to right, rgba(17,17,8,1) 0%, rgba(17,17,8,0) 40%);
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--bg); padding: 0; }
+    .about-layout { display: grid; grid-template-columns: 1fr 1fr; min-height: 580px; }
+    .about-img { position: relative; overflow: hidden; }
+    .about-img img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+    .about-img::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(10,10,8,0) 50%, rgba(10,10,8,1) 100%);
+    }
+    .about-text { padding: 5rem 5% 5rem 4rem; display: flex; flex-direction: column; justify-content: center; }
+    .about-text p { color: var(--muted); line-height: 1.8; margin-bottom: 1.2rem; }
+    .about-text p strong { color: var(--white); }
+    .about-text .btn-primary { align-self: flex-start; margin-top: .8rem; }
+
+    /* ── CTA ── */
+    #cta { padding: 0; position: relative; overflow: hidden; min-height: 360px; display: flex; align-items: center; }
+    .cta-bg {
+      position: absolute; inset: 0;
+      background: url('office.jpg') center/cover no-repeat;
+    }
+    .cta-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(10,10,8,.82);
+    }
+    .cta-content { position: relative; z-index: 1; text-align: center; width: 100%; padding: 5rem 5%; }
+    .cta-content .sec-eye { justify-content: center; }
+    .cta-content p { color: var(--muted); max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.75; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--surface); }
+    .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; }
+    .contact-left p { color: var(--muted); margin-bottom: 2.5rem; line-height: 1.75; }
+    .contact-items { display: flex; flex-direction: column; gap: 1.4rem; }
+    .c-item { display: flex; align-items: flex-start; gap: 1rem; }
+    .c-icon {
+      width: 42px; height: 42px; flex-shrink: 0;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .c-icon svg { width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 1.8; }
+    .c-label { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .2rem; }
+    .c-val { font-size: .92rem; color: var(--white); }
+    .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .fg { display: flex; flex-direction: column; gap: .45rem; }
+    .fg label { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    .fg input, .fg textarea, .fg select {
+      background: var(--bg); border: 1px solid var(--border); color: var(--white);
+      padding: .85rem 1rem; font-size: .9rem; font-family: var(--body); outline: none;
+      transition: border-color .2s; resize: none;
+    }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-color: var(--gold); }
+    .fg select option { background: var(--surface); }
+    .fg textarea { min-height: 130px; }
+    .btn-submit {
+      background: var(--grad); color: #000; padding: .9rem 2.2rem;
+      font-weight: 700; font-size: .88rem; border: none; cursor: pointer;
+      letter-spacing: .08em; text-transform: uppercase; align-self: flex-start; transition: opacity .2s;
+    }
+    .btn-submit:hover { opacity: .85; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--bg); border-top: 1px solid var(--border); padding: 4rem 5% 2rem; }
+    .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+    .footer-brand img { height: 32px; margin-bottom: 1rem; }
+    .footer-brand p { font-size: .85rem; color: var(--muted); line-height: 1.7; max-width: 240px; }
+    .footer-col h4 { font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .7rem; }
+    .footer-col ul a { color: var(--white); text-decoration: none; font-size: .88rem; transition: color .2s; }
+    .footer-col ul a:hover { color: var(--gold); }
+    .footer-bottom {
+      border-top: 1px solid var(--border); padding-top: 1.5rem;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-bottom p { font-size: .8rem; color: var(--muted); }
+    .footer-socials { display: flex; gap: .8rem; }
+    .footer-socials a {
+      width: 34px; height: 34px; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); text-decoration: none; font-size: .78rem; transition: border-color .2s, color .2s;
+    }
+    .footer-socials a:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── MOBILE MENU ── */
+    .mobile-menu {
+      display: none; flex-direction: column;
+      position: fixed; inset: 0; z-index: 99;
+      background: var(--bg); padding: 6rem 5% 3rem; gap: 2rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--display); font-size: 2rem; font-weight: 700;
+      color: var(--white); text-decoration: none;
+      border-bottom: 1px solid var(--border); padding-bottom: 1rem; transition: color .2s;
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .stats-bar { grid-template-columns: repeat(2,1fr); }
+      .stat:nth-child(2) { border-right: none; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .services-top { grid-template-columns: 1fr; }
+      .services-img { height: 300px; }
+      .services-img::after { background: linear-gradient(to top, rgba(10,10,8,1) 0%, rgba(10,10,8,0) 60%); }
+      .services-text { padding: 3rem 5%; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .process-layout { grid-template-columns: 1fr; }
+      .process-img { height: 320px; order: -1; }
+      .process-img::before { background: linear-gradient(to bottom, rgba(17,17,8,0) 50%, rgba(17,17,8,1) 100%); }
+      .process-text { padding: 3rem 5%; }
+      .about-layout { grid-template-columns: 1fr; }
+      .about-img { height: 400px; }
+      .about-img::after { background: linear-gradient(to bottom, rgba(10,10,8,0) 50%, rgba(10,10,8,1) 100%); }
+      .about-text { padding: 3rem 5%; }
+      .contact-layout { grid-template-columns: 1fr; gap: 3rem; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    }
+    @media (max-width: 560px) {
+      section { padding: 4rem 5%; }
+      .stats-bar { grid-template-columns: 1fr 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+    }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo"><img src="kodeandco_logo_option2.png" alt="Kode&Co"/></a>
+  <ul class="nav-links">
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get in Touch</a>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#projects" onclick="closeMobile()">Work</a>
+  <a href="#services" onclick="closeMobile()">Services</a>
+  <a href="#process" onclick="closeMobile()">Process</a>
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#contact" onclick="closeMobile()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="eyebrow">Web · Mobile · Software</div>
+    <h1>Your Vision,<br/><em>Engineered.</em></h1>
+    <p class="hero-sub">We design and build digital products that work — clean code, sharp interfaces, and systems that scale with your ambition.</p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">View Our Work</a>
+      <a href="#contact" class="btn-outline">Start a Project</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat reveal"><div class="stat-num">4+</div><div class="stat-label">Projects Shipped</div></div>
+  <div class="stat reveal"><div class="stat-num">2</div><div class="stat-label">Expert Founders</div></div>
+  <div class="stat reveal"><div class="stat-num">4</div><div class="stat-label">Core Services</div></div>
+  <div class="stat reveal"><div class="stat-num">NBO</div><div class="stat-label">Based in Nairobi</div></div>
+</div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="projects-header reveal">
+    <div>
+      <div class="sec-eye">Featured Work</div>
+      <h2>Products That<br/>Define Excellence</h2>
+    </div>
+    <p>A selection of systems and platforms we've designed, built, and shipped.</p>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-img-wrap">
+        <img class="project-img" src="coding.jpg" alt="Insurance Management System"/>
+      </div>
+      <div class="project-body">
+        <div class="p-num">01</div>
+        <h3>Insurance Management System</h3>
+        <p>A full-featured insurance platform with an embedded AI Policy Assistant powered by the Anthropic API — enabling instant policy queries, claims tracking, and client management.</p>
+        <div class="tags">
+          <span class="tag">HTML</span><span class="tag">Bootstrap</span><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Anthropic API</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-img-wrap">
+        <img class="project-img" src="hero.jpg" alt="Disaster Management System"/>
+      </div>
+      <div class="project-body">
+        <div class="p-num">02</div>
+        <h3>Disaster Management System</h3>
+        <p>A crisis coordination platform for tracking, reporting, and managing disaster response operations — built for speed, reliability, and real-time situational awareness.</p>
+        <div class="tags">
+          <span class="tag">HTML</span><span class="tag">Bootstrap</span><span class="tag">PHP</span><span class="tag">MySQL</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-img-wrap">
+        <img class="project-img" src="office.jpg" alt="Personal Portfolio"/>
+      </div>
+      <div class="project-body">
+        <div class="p-num">03</div>
+        <h3>Personal Developer Portfolio</h3>
+        <p>A high-performance developer portfolio with a Spring Boot REST API backend, custom animations, and a dynamic projects showcase pulled live from a MySQL database.</p>
+        <div class="tags">
+          <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">Java</span><span class="tag">MySQL</span><span class="tag">REST API</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-img-wrap">
+        <img class="project-img" src="team.jpg" alt="ISP Billing System"/>
+      </div>
+      <div class="project-body">
+        <div class="p-num">04</div>
+        <h3>ISP Billing System</h3>
+        <p>A smart hotspot billing and network management platform with user authentication, data plan management, real-time session tracking, and a Spring Boot powered API layer.</p>
+        <div class="tags">
+          <span class="tag">HTML</span><span class="tag">Bootstrap</span><span class="tag">Java Spring Boot</span><span class="tag">MySQL</span><span class="tag">API</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-top">
+    <div class="services-img">
+      <img src="coding.jpg" alt="Developer coding"/>
+    </div>
+    <div class="services-text reveal">
+      <div class="sec-eye">What We Do</div>
+      <h2>End-to-End<br/>Digital Solutions</h2>
+      <p>From pixel-perfect interfaces to robust backend systems, we handle every layer of the stack. Whether you need a client-facing product or an internal tool, we engineer it right the first time.</p>
+      <a href="#contact" class="btn-outline" style="align-self:flex-start">Discuss Your Project</a>
+    </div>
+  </div>
+  <div class="services-grid">
+    <div class="svc-card reveal">
+      <div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div>
+      <h3>Web Development</h3>
+      <p>Responsive, fast, and scalable web applications built with modern stacks and clean architecture.</p>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div>
+      <h3>Mobile App Development</h3>
+      <p>Native and cross-platform mobile apps that deliver seamless experiences on every device.</p>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg></div>
+      <h3>UI/UX Design</h3>
+      <p>Interfaces that are intuitive, accessible, and visually sharp — designed with the end user always in mind.</p>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <h3>IT Consulting</h3>
+      <p>Strategic technology guidance to help businesses make smart decisions about software and infrastructure.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-layout">
+    <div class="process-text reveal">
+      <div class="sec-eye">How We Work</div>
+      <h2>A Seamless Journey<br/>From Vision to Reality</h2>
+      <p>Every great product starts with a clear process. Here's how we take your idea from concept to a shipped, supported product.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-dot">01</div>
+          <div><h4>Discover</h4><p>We listen deeply to understand your goals, users, and constraints.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-dot">02</div>
+          <div><h4>Design</h4><p>We craft interfaces and architecture before writing a single line of code.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-dot">03</div>
+          <div><h4>Build</h4><p>Clean, tested, and documented code delivered in iterative sprints.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-dot">04</div>
+          <div><h4>Deliver</h4><p>On-time delivery with thorough handover and deployment support.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-dot">05</div>
+          <div><h4>Support</h4><p>Ongoing maintenance, updates, and support long after launch.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="process-img">
+      <img src="office.jpg" alt="Kode&Co workspace"/>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-layout">
+    <div class="about-img">
+      <img src="team.jpg" alt="Brian and Ivan — Kode&Co founders"/>
+    </div>
+    <div class="about-text reveal">
+      <div class="sec-eye">About Us</div>
+      <h2>Two Builders.<br/>One Studio.</h2>
+      <p>Kode&Co is a Nairobi-based digital studio founded by <strong>Brian and Ivan</strong> — two full-stack developers with a shared obsession for well-engineered software.</p>
+      <p>We started building together because we believed great software shouldn't be the exclusive domain of large agencies. Every business deserves a product that works beautifully and scales gracefully.</p>
+      <p>Today we build <strong>web platforms, mobile apps, and custom software</strong> for clients who care about quality — and ship our own products too, because we practice what we preach.</p>
+      <a href="#contact" class="btn-primary">Work With Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section id="cta">
+  <div class="cta-bg"></div>
+  <div class="cta-content">
+    <div class="sec-eye reveal">Let's Build</div>
+    <h2 class="reveal">Ready to Build Something<br/>Extraordinary?</h2>
+    <p class="reveal">Tell us about your project and we'll get back to you within 24 hours.</p>
+    <a href="#contact" class="btn-primary reveal">Start Your Project</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-layout">
+    <div class="contact-left reveal">
+      <div class="sec-eye">Get in Touch</div>
+      <h2>Let's Talk<br/>About Your Project</h2>
+      <p>We're based in Nairobi CBD and work with clients locally and globally. Reach out and let's figure out how we can help.</p>
+      <div class="contact-items">
+        <div class="c-item">
+          <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div><div class="c-label">Email</div><div class="c-val">kode&amp;co@gmail.com</div></div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.95 9.81 19.79 19.79 0 01.88 1.18 2 2 0 012.88 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+          <div><div class="c-label">Phone</div><div class="c-val">0717 186 886</div></div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><div class="c-label">Location</div><div class="c-val">Nairobi CBD, Opposite Judiciary<br/>Kenya Re Buildings</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form reveal">
+      <div class="form-row">
+        <div class="fg"><label>First Name</label><input type="text" placeholder="Brian"/></div>
+        <div class="fg"><label>Last Name</label><input type="text" placeholder="Doe"/></div>
+      </div>
+      <div class="fg"><label>Email Address</label><input type="email" placeholder="you@company.com"/></div>
+      <div class="fg">
+        <label>Service Interested In</label>
+        <select>
+          <option value="">Select a service</option>
+          <option>Web Development</option>
+          <option>Mobile App Development</option>
+          <option>UI/UX Design</option>
+          <option>IT Consulting</option>
+        </select>
+      </div>
+      <div class="fg"><label>Tell Us About Your Project</label><textarea placeholder="Describe your project, goals, and timeline..."></textarea></div>
+      <button class="btn-submit">Send Message →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <img src="kodeandco_logo_option2.png" alt="Kode&Co"/>
+      <p>We design and build digital products that work — clean code, sharp interfaces, systems that scale.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Web Development</a></li>
+        <li><a href="#services">Mobile Apps</a></li>
+        <li><a href="#services">UI/UX Design</a></li>
+        <li><a href="#services">IT Consulting</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Work</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:kodeandco@gmail.com">kode&amp;co@gmail.com</a></li>
+        <li><a href="tel:0717186886">0717 186 886</a></li>
+        <li><a href="#contact">Nairobi CBD</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Kode&amp;Co. All rights reserved.</p>
+    <div class="footer-socials">
+      <a href="#" title="Twitter">𝕏</a>
+      <a href="#" title="LinkedIn">in</a>
+      <a href="#" title="GitHub">gh</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50));
+
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  function closeMobile() { mobileMenu.classList.remove('open'); }
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
