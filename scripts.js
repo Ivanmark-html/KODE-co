@@ -43,3 +43,49 @@ const loading = setInterval(() => {
     else loaderText.textContent = messages[3];
   }
 }, 100);
+// ── COUNTER ANIMATION ──
+const statNums = document.querySelectorAll('.stat-num');
+
+const animateCounter = (el) => {
+  const text = el.textContent.trim();
+
+  // If NBO or non-numeric just fade in
+  if (isNaN(parseInt(text))) {
+    el.style.opacity = '0';
+    setTimeout(() => {
+      el.style.transition = 'opacity 1s ease';
+      el.style.opacity = '1';
+    }, 200);
+    return;
+  }
+
+  const target = parseInt(text);
+  const suffix = text.replace(/[0-9]/g, '');
+  const duration = 1500;
+  const steps = 60;
+  const increment = target / steps;
+  let current = 0;
+  el.textContent = '0' + suffix;
+
+  const timer = setInterval(() => {
+    current += increment;
+    if (current >= target) {
+      el.textContent = target + suffix;
+      clearInterval(timer);
+    } else {
+      el.textContent = Math.floor(current) + suffix;
+    }
+  }, duration / steps);
+};
+
+// Trigger when stats scroll into view
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animateCounter(entry.target);
+      counterObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+statNums.forEach(el => counterObserver.observe(el));
