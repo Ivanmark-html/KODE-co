@@ -21,7 +21,39 @@ const messages = [
   'Welcome to Kode&Co'
 ];
 
+// ── LOADING SCREEN ──
+const loader = document.getElementById('loader');
+const loaderFill = document.getElementById('loaderFill');
+const loaderText = document.querySelector('.loader-text');
+
+let progress = 0;
+
+const messages = ['Initializing...', 'Loading assets...', 'Almost ready...', 'Welcome to Kode&Co'];
+
+const hideLoader = () => {
+  loaderFill.style.width = '100%';
+  loaderText.textContent = 'Welcome to Kode&Co ✦';
+  setTimeout(() => loader.classList.add('hidden'), 400);
+};
+
 const loading = setInterval(() => {
+  progress += Math.random() * 15;
+
+  if (progress >= 100) {
+    progress = 100;
+    clearInterval(loading);
+    hideLoader();
+  } else {
+    loaderFill.style.width = progress + '%';
+    if (progress < 30) loaderText.textContent = messages[0];
+    else if (progress < 60) loaderText.textContent = messages[1];
+    else if (progress < 90) loaderText.textContent = messages[2];
+    else loaderText.textContent = messages[3];
+  }
+}, 100);
+
+// Safety net — force hide after 3 seconds no matter what
+setTimeout(hideLoader, 3000);
   progress += Math.random() * 15;
 
   if (progress >= 100) {
